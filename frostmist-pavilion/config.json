@@ -7,7 +7,6 @@
     "footer": "俠義江湖　·　行俠仗義　·　寒煙樓"
   },
   "dailyEvent": {
-    "icon": "🕰️",
     "label": "每　日　固　定",
     "name": "百　業　派　對",
     "timeLabel": "開　始　時　間",
@@ -19,20 +18,8 @@
       "label": "MON",
       "weekend": false,
       "events": [
-        {
-          "type": "jade-event",
-          "icon": "⚔️",
-          "time": "20:30",
-          "name": "一決高下",
-          "note": ""
-        },
-        {
-          "type": "tbd",
-          "icon": "🏯",
-          "time": "時間待定",
-          "name": "百業俠境",
-          "note": ""
-        }
+        { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" },
+        { "type": "tbd",        "time": "時間待定", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -40,13 +27,7 @@
       "label": "TUE",
       "weekend": false,
       "events": [
-        {
-          "type": "tbd",
-          "icon": "🏯",
-          "time": "時間待定",
-          "name": "百業俠境",
-          "note": ""
-        }
+        { "type": "tbd", "time": "時間待定", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -54,13 +35,7 @@
       "label": "WED",
       "weekend": false,
       "events": [
-        {
-          "type": "battle",
-          "icon": "🍃",
-          "time": "20:30",
-          "name": "破軍殺將",
-          "note": ""
-        }
+        { "type": "battle", "time": "20:30", "name": "破軍殺將", "note": "" }
       ]
     },
     {
@@ -68,13 +43,7 @@
       "label": "THU",
       "weekend": false,
       "events": [
-        {
-          "type": "tbd",
-          "icon": "🏯",
-          "time": "時間待定",
-          "name": "百業俠境",
-          "note": ""
-        }
+        { "type": "tbd", "time": "時間待定", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -82,13 +51,7 @@
       "label": "FRI",
       "weekend": false,
       "events": [
-        {
-          "type": "jade-event",
-          "icon": "⚔️",
-          "time": "20:30",
-          "name": "一決高下",
-          "note": ""
-        }
+        { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" }
       ]
     },
     {
@@ -96,20 +59,8 @@
       "label": "SAT",
       "weekend": true,
       "events": [
-        {
-          "type": "battle",
-          "icon": "🍃",
-          "time": "20:30",
-          "name": "破軍殺將",
-          "note": ""
-        },
-        {
-          "type": "trophy",
-          "icon": "🏆",
-          "time": "20:30",
-          "name": "百業戰",
-          "note": "★ 20:00 報名截止"
-        }
+        { "type": "battle", "time": "20:30", "name": "破軍殺將",  "note": "" },
+        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 20:00 報名截止" }
       ]
     },
     {
@@ -117,21 +68,15 @@
       "label": "SUN",
       "weekend": true,
       "events": [
-        {
-          "type": "trophy",
-          "icon": "🏆",
-          "time": "20:30",
-          "name": "百業戰",
-          "note": "★ 20:00 報名截止"
-        }
+        { "type": "trophy", "time": "20:30", "name": "百業戰", "note": "★ 20:00 報名截止" }
       ]
     }
   ],
   "legend": [
-    { "color": "gold",  "icon": "🕰️", "text": "每日 · 百業派對 20:00" },
-    { "color": "jade",  "icon": "⚔️", "text": "一五 · 一決高下 20:30" },
-    { "color": "red",   "icon": "🍃", "text": "三六 · 破軍殺將 20:30" },
-    { "color": "steel", "icon": "🏆", "text": "六日 · 百業戰 20:30" },
-    { "color": "mist",  "icon": "🏯", "text": "百業俠境 · 時間待定" }
+    { "color": "gold",  "text": "每日 · 百業派對 20:00" },
+    { "color": "jade",  "text": "一五 · 一決高下 20:30" },
+    { "color": "red",   "text": "三六 · 破軍殺將 20:30" },
+    { "color": "steel", "text": "六日 · 百業戰 20:30" },
+    { "color": "mist",  "text": "百業俠境 · 時間待定" }
   ]
 }
