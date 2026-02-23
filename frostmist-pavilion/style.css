@@ -9,6 +9,7 @@
   --mist: #8a7f72;
   --jade: #2d5a3d;
   --steel: #3a4a5c;
+  --purple: #3a2555;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -253,10 +254,10 @@ body {
 }
 
 .event-card.party {
-  background: rgba(13,10,8,0.06);
-  border: 1px solid rgba(200,150,60,0.3);
+  background: rgba(43, 29, 68, 0.10);
+  border: 1px solid rgba(43, 29, 68, 0.35);
 }
-.event-card.party::before { background: var(--gold); }
+.event-card.party::before { background: var(--purple); }
 
 .event-card.battle {
   background: rgba(139,26,26,0.07);
@@ -275,6 +276,13 @@ body {
   border: 1px solid rgba(58,74,92,0.35);
 }
 .event-card.trophy::before { background: var(--steel); }
+
+.event-card.mist {
+  background: rgba(138,127,114,0.07);
+  border: 1px solid rgba(138,127,114,0.3);
+}
+.event-card.mist::before { background: var(--mist); }
+
 
 .event-icon { font-size: 13px; line-height: 1; }
 .event-time {

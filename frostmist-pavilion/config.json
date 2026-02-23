@@ -2,9 +2,9 @@
   "site": {
     "label": "江湖　·　活動行事曆",
     "title": "寒　煙　樓",
-    "subtitle": "一　週　賽　程　覽　表",
+    "subtitle": "煨一壺浮名換酒　.　裁三寸寒煙入文",
     "seal": "每週固定活動",
-    "footer": "俠義江湖　·　行俠仗義　·　寒煙樓"
+    "footer": "少俠，你的故事比酒更下菜　©　寒煙樓"
   },
   "dailyEvent": {
     "label": "每　日　固　定",
@@ -19,7 +19,7 @@
       "weekend": false,
       "events": [
         { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" },
-        { "type": "tbd",        "time": "時間待定", "name": "百業俠境", "note": "" }
+        { "type": "mist",        "time": "21:00", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -27,7 +27,6 @@
       "label": "TUE",
       "weekend": false,
       "events": [
-        { "type": "tbd", "time": "時間待定", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -43,7 +42,6 @@
       "label": "THU",
       "weekend": false,
       "events": [
-        { "type": "tbd", "time": "時間待定", "name": "百業俠境", "note": "" }
       ]
     },
     {
@@ -60,7 +58,8 @@
       "weekend": true,
       "events": [
         { "type": "battle", "time": "20:30", "name": "破軍殺將",  "note": "" },
-        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 20:00 報名截止" }
+        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 20:00 報名截止" },
+        { "type": "mist", "time": "21:00", "name": "百業俠境", "note": "" }
       ]
     },
     {
