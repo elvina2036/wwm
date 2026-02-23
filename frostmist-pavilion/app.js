@@ -91,16 +91,14 @@ function renderPoster(cfg) {
   // Daily event banner
   content.insertAdjacentHTML('beforeend', `
     <div class="daily-event">
-      <span class="daily-icon">${escHtml(dailyEvent.icon)}</span>
-      <div style="text-align:center;">
+      <div class="daily-label-section">
         <div class="daily-text">${escHtml(dailyEvent.label)}</div>
         <div class="daily-name">${escHtml(dailyEvent.name)}</div>
       </div>
-      <div style="text-align:center;border-left:1px solid rgba(200,150,60,0.3);padding-left:20px;">
-        <div class="daily-text" style="font-size:11px;">${escHtml(dailyEvent.timeLabel)}</div>
+      <div class="daily-time-section">
+        <div class="daily-text daily-text-sm">${escHtml(dailyEvent.timeLabel)}</div>
         <div class="daily-time">${escHtml(dailyEvent.time)}</div>
       </div>
-      <span class="daily-icon">${escHtml(dailyEvent.icon)}</span>
     </div>
   `);
 
@@ -122,7 +120,7 @@ function renderPoster(cfg) {
       legendEl.insertAdjacentHTML('beforeend', `
         <div class="legend-item">
           <div class="legend-dot" style="background:${color}"></div>
-          ${escHtml(item.icon)} ${escHtml(item.text)}
+          ${escHtml(item.text)}
         </div>
       `);
     });
@@ -160,7 +158,6 @@ function buildDayCol(day) {
     const card = document.createElement('div');
     card.className = `event-card ${escHtml(ev.type)}`;
     card.innerHTML = `
-      <div class="event-icon">${escHtml(ev.icon)}</div>
       <div class="event-time">${escHtml(ev.time)}</div>
       <div class="event-name">${escHtml(ev.name)}</div>
       ${ev.note ? `<div class="event-note">${escHtml(ev.note)}</div>` : ''}
