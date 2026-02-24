@@ -1,4 +1,19 @@
 {
+  "baseTimezone": "Asia/Taipei",
+  "timezones": [
+    { "id": "Asia/Taipei",        "label": "台北　UTC+8" },
+    { "id": "Asia/Tokyo",         "label": "東京　UTC+9" },
+    { "id": "Asia/Hong_Kong",     "label": "香港　UTC+8" },
+    { "id": "Asia/Singapore",     "label": "新加坡　UTC+8" },
+    { "id": "Asia/Seoul",         "label": "首爾　UTC+9" },
+    { "id": "Australia/Sydney",   "label": "雪梨　UTC+11" },
+    { "id": "Europe/London",      "label": "倫敦　GMT" },
+    { "id": "Europe/Paris",       "label": "巴黎　UTC+1" },
+    { "id": "America/New_York",   "label": "紐約　UTC-5" },
+    { "id": "America/Chicago",    "label": "芝加哥　UTC-6" },
+    { "id": "America/Los_Angeles","label": "洛杉磯　UTC-8" },
+    { "id": "UTC",                "label": "UTC±0" }
+  ],
   "site": {
     "label": "江湖　·　活動行事曆",
     "title": "寒　煙　樓",
@@ -19,15 +34,14 @@
       "weekend": false,
       "events": [
         { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" },
-        { "type": "mist",        "time": "21:00", "name": "百業俠境", "note": "" }
+        { "type": "mist",       "time": "21:00", "name": "百業俠境", "note": "" }
       ]
     },
     {
       "char": "二",
       "label": "TUE",
       "weekend": false,
-      "events": [
-      ]
+      "events": []
     },
     {
       "char": "三",
@@ -41,8 +55,7 @@
       "char": "四",
       "label": "THU",
       "weekend": false,
-      "events": [
-      ]
+      "events": []
     },
     {
       "char": "五",
@@ -59,7 +72,7 @@
       "events": [
         { "type": "battle", "time": "20:30", "name": "破軍殺將",  "note": "" },
         { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 20:00 報名截止" },
-        { "type": "mist", "time": "21:00", "name": "百業俠境", "note": "" }
+        { "type": "mist",   "time": "21:00", "name": "百業俠境",  "note": "" }
       ]
     },
     {
