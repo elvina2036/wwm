@@ -75,8 +75,9 @@ function updateAllTimes() {
   const fromTz = currentConfig.baseTimezone || 'Asia/Taipei';
   document.querySelectorAll('[data-base-time]').forEach(el => {
     const { display, dayOffset } = convertTime(el.dataset.baseTime, fromTz, currentTimezone);
+    const prefix = el.dataset.notePrefix || '';
     while (el.firstChild) el.removeChild(el.firstChild);
-    el.appendChild(document.createTextNode(display));
+    el.appendChild(document.createTextNode(prefix + display));
     if (dayOffset !== 0) {
       const badge = document.createElement('span');
       badge.className = 'day-offset';
@@ -244,7 +245,6 @@ function renderPoster(cfg) {
   // Footer
   content.insertAdjacentHTML('beforeend', `
     <div class="footer">
-      <div class="footer-deco">⸺ ◆ ⸺</div>
       <div class="footer-text">${escHtml(site.footer)}</div>
     </div>
   `);
@@ -284,11 +284,9 @@ function buildDayCol(day) {
       if (ev.noteTime) {
         const noteEl = document.createElement('div');
         noteEl.className = 'event-note';
-        noteEl.appendChild(document.createTextNode(ev.note + '\u00A0'));
-        const noteTimeEl = document.createElement('span');
-        noteTimeEl.setAttribute('data-base-time', ev.noteTime);
-        noteTimeEl.textContent = ev.noteTime;
-        noteEl.appendChild(noteTimeEl);
+        noteEl.setAttribute('data-base-time', ev.noteTime);
+        noteEl.setAttribute('data-note-prefix', ev.note + '\u00A0');
+        noteEl.textContent = ev.note + '\u00A0' + ev.noteTime;
         card.appendChild(noteEl);
       } else {
         card.insertAdjacentHTML('beforeend', `<div class="event-note">${escHtml(ev.note)}</div>`);
