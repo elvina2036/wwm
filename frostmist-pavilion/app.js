@@ -6,6 +6,10 @@
  *   ?config=https://example.com/my-config.json
  */
 
+// ── Globals ───────────────────────────────────────────────────────────────────
+let currentConfig   = null;
+let currentTimezone = null;
+
 const CORNER_SVG = `
   <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2,2 L14,2 L14,4 L4,4 L4,14 L2,14 Z" fill="#c8963c"/>
@@ -22,17 +26,15 @@ const LEGEND_COLOR_MAP = {
   mist:  'var(--mist)',
 };
 
-/** Resolve config URL: ?config=<url> or ./config.json */
+// ── Config loading ────────────────────────────────────────────────────────────
 function resolveConfigUrl() {
   const params = new URLSearchParams(window.location.search);
   const custom = params.get('config');
   if (custom) return custom;
-  // Derive base path from current page so it works on GitHub Pages subdirs
   const base = window.location.pathname.replace(/\/[^/]*$/, '/');
   return base + 'config.json';
 }
 
-/** Fetch and parse config JSON */
 async function loadConfig() {
   const url = resolveConfigUrl();
   const res = await fetch(url);
@@ -40,12 +42,143 @@ async function loadConfig() {
   return res.json();
 }
 
-/** Build the static poster skeleton and inject dynamic content */
+// ── Time conversion ───────────────────────────────────────────────────────────
+const _tzOffsetCache = {};
+
+/**
+ * Returns (UTC_minutes − local_minutes) for timezone `tz`.
+ * Positive  → behind UTC  (e.g. UTC-5 → +300)
+ * Negative  → ahead of UTC (e.g. UTC+8 → -480)
+ */
+function getOffsetMinutes(tz) {
+  if (_tzOffsetCache[tz] !== undefined) return _tzOffsetCache[tz];
+  const ref = new Date('2024-01-15T12:00:00Z');
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(ref);
+  let h = parseInt(parts.find(p => p.type === 'hour').value, 10);
+  const m = parseInt(parts.find(p => p.type === 'minute').value, 10);
+  if (h === 24) h = 0;
+  return (_tzOffsetCache[tz] = 12 * 60 - (h * 60 + m));
+}
+
+/** Convert "HH:MM" from fromTz to toTz. Non-time strings pass through. */
+function convertTime(timeStr, fromTz, toTz) {
+  if (fromTz === toTz || !/^\d{1,2}:\d{2}$/.test(timeStr)) {
+    return { display: timeStr, dayOffset: 0 };
+  }
+  const [h, m] = timeStr.split(':').map(Number);
+  const raw = h * 60 + m + getOffsetMinutes(fromTz) - getOffsetMinutes(toTz);
+  const dayOffset  = Math.floor(raw / 1440);
+  const normalized = ((raw % 1440) + 1440) % 1440;
+  return {
+    display: `${String(Math.floor(normalized / 60)).padStart(2,'0')}:${String(normalized % 60).padStart(2,'0')}`,
+    dayOffset,
+  };
+}
+
+/** Rewrite all [data-base-time] elements to the current timezone. */
+function updateAllTimes() {
+  const fromTz = currentConfig.baseTimezone || 'Asia/Taipei';
+  document.querySelectorAll('[data-base-time]').forEach(el => {
+    const { display, dayOffset } = convertTime(el.dataset.baseTime, fromTz, currentTimezone);
+    while (el.firstChild) el.removeChild(el.firstChild);
+    el.appendChild(document.createTextNode(display));
+    if (dayOffset !== 0) {
+      const badge = document.createElement('span');
+      badge.className = 'day-offset';
+      badge.textContent = dayOffset > 0 ? '+1' : '-1';
+      el.appendChild(badge);
+    }
+  });
+}
+
+// ── Timezone selector ─────────────────────────────────────────────────────────
+function buildTimezoneSelector(cfg) {
+  const tzs = cfg.timezones || [];
+  currentTimezone = cfg.baseTimezone || 'Asia/Taipei';
+  const initLabel = (tzs.find(t => t.id === currentTimezone) || {}).label || currentTimezone;
+
+  const row = document.createElement('div');
+  row.className = 'tz-row';
+  const lbl = document.createElement('span');
+  lbl.className = 'tz-row-label';
+  lbl.textContent = '時　區';
+  row.appendChild(lbl);
+
+  const sel = document.createElement('div');
+  sel.className = 'tz-selector';
+
+  const btn = document.createElement('button');
+  btn.className = 'tz-btn';
+  btn.setAttribute('type', 'button');
+  btn.setAttribute('aria-haspopup', 'listbox');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML =
+    `<span class="tz-btn-glyph">◉</span>` +
+    `<span class="tz-btn-label">${escHtml(initLabel)}</span>` +
+    `<span class="tz-btn-arrow">▾</span>`;
+
+  const dd = document.createElement('div');
+  dd.className = 'tz-dropdown';
+  dd.setAttribute('role', 'listbox');
+
+  tzs.forEach(tz => {
+    const opt = document.createElement('div');
+    opt.className = 'tz-opt' + (tz.id === currentTimezone ? ' selected' : '');
+    opt.setAttribute('role', 'option');
+    opt.setAttribute('data-tz', tz.id);
+    opt.setAttribute('aria-selected', String(tz.id === currentTimezone));
+    opt.innerHTML =
+      `<span class="tz-opt-label">${escHtml(tz.label)}</span>` +
+      `<span class="tz-opt-check">✦</span>`;
+
+    opt.addEventListener('click', () => {
+      dd.querySelectorAll('.tz-opt').forEach(o => {
+        o.classList.remove('selected');
+        o.setAttribute('aria-selected', 'false');
+      });
+      opt.classList.add('selected');
+      opt.setAttribute('aria-selected', 'true');
+      btn.querySelector('.tz-btn-label').textContent = tz.label;
+      sel.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      currentTimezone = tz.id;
+      updateAllTimes();
+    });
+    dd.appendChild(opt);
+  });
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = sel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', () => {
+    sel.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+  sel.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      sel.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.focus();
+    }
+  });
+
+  sel.appendChild(btn);
+  sel.appendChild(dd);
+  row.appendChild(sel);
+  return row;
+}
+
+// ── Rendering ─────────────────────────────────────────────────────────────────
 function renderPoster(cfg) {
+  currentConfig = cfg;
+
   const poster = document.getElementById('poster');
   poster.innerHTML = '';
 
-  // ── Background SVGs ─────────────────────────────────────────────
   poster.insertAdjacentHTML('beforeend', `
     <svg class="ink-wash" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
       <path d="M0,280 L0,200 Q50,160 100,180 Q150,200 200,150 Q250,100 300,130 Q350,160 400,110 Q450,60 500,90 Q550,120 600,80 Q650,40 700,70 Q750,100 800,60 Q850,20 900,50 L900,280 Z" fill="#0d0a08"/>
@@ -60,7 +193,6 @@ function renderPoster(cfg) {
     </svg>
   `);
 
-  // ── Frames ───────────────────────────────────────────────────────
   poster.insertAdjacentHTML('beforeend', `
     <div class="frame-outer"></div>
     <div class="frame-inner"></div>
@@ -70,12 +202,12 @@ function renderPoster(cfg) {
     <div class="corner br">${CORNER_SVG}</div>
   `);
 
-  // ── Content wrapper ──────────────────────────────────────────────
   const content = document.createElement('div');
   content.className = 'content';
 
-  // Header
   const { site, dailyEvent, days, legend } = cfg;
+
+  // Header
   content.insertAdjacentHTML('beforeend', `
     <div class="header">
       <div class="title-label">${escHtml(site.label)}</div>
@@ -88,7 +220,12 @@ function renderPoster(cfg) {
   // Top divider
   content.insertAdjacentHTML('beforeend', buildDivider(true));
 
-  // Daily event banner
+  // Timezone selector
+  if (cfg.timezones && cfg.timezones.length) {
+    content.appendChild(buildTimezoneSelector(cfg));
+  }
+
+  // Daily event banner — data-base-time enables dynamic conversion
   content.insertAdjacentHTML('beforeend', `
     <div class="daily-event">
       <div class="daily-label-section">
@@ -97,7 +234,7 @@ function renderPoster(cfg) {
       </div>
       <div class="daily-time-section">
         <div class="daily-text daily-text-sm">${escHtml(dailyEvent.timeLabel)}</div>
-        <div class="daily-time">${escHtml(dailyEvent.time)}</div>
+        <div class="daily-time" data-base-time="${escHtml(dailyEvent.time)}">${escHtml(dailyEvent.time)}</div>
       </div>
     </div>
   `);
@@ -138,7 +275,7 @@ function renderPoster(cfg) {
   poster.appendChild(content);
 }
 
-/** Build a single day column element */
+/** Build a single day column element. */
 function buildDayCol(day) {
   const col = document.createElement('div');
   col.className = 'day-col';
@@ -157,11 +294,18 @@ function buildDayCol(day) {
   (day.events || []).forEach(ev => {
     const card = document.createElement('div');
     card.className = `event-card ${escHtml(ev.type)}`;
-    card.innerHTML = `
-      <div class="event-time">${escHtml(ev.time)}</div>
-      <div class="event-name">${escHtml(ev.name)}</div>
-      ${ev.note ? `<div class="event-note">${escHtml(ev.note)}</div>` : ''}
-    `;
+
+    // Use DOM node for .event-time so data-base-time is set for updateAllTimes()
+    const timeEl = document.createElement('div');
+    timeEl.className = 'event-time';
+    timeEl.setAttribute('data-base-time', ev.time);
+    timeEl.textContent = ev.time;
+
+    card.appendChild(timeEl);
+    card.insertAdjacentHTML('beforeend',
+      `<div class="event-name">${escHtml(ev.name)}</div>` +
+      (ev.note ? `<div class="event-note">${escHtml(ev.note)}</div>` : ''));
+
     container.appendChild(card);
   });
 
@@ -169,7 +313,7 @@ function buildDayCol(day) {
   return col;
 }
 
-/** Divider HTML — triple diamonds when primary, single when secondary */
+/** Divider HTML — triple diamonds (primary) or single (secondary). */
 function buildDivider(primary) {
   if (primary) {
     return `
@@ -189,7 +333,7 @@ function buildDivider(primary) {
     </div>`;
 }
 
-/** Minimal HTML escape to prevent XSS from config values */
+/** Minimal HTML escape to prevent XSS from config values. */
 function escHtml(str) {
   if (str == null) return '';
   return String(str)
@@ -199,18 +343,18 @@ function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-// ── Bootstrap ────────────────────────────────────────────────────────────────
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  const loading = document.getElementById('app-loading');
-  const errorEl = document.getElementById('app-error');
+  const loadingEl = document.getElementById('app-loading');
+  const errorEl   = document.getElementById('app-error');
 
   try {
     const cfg = await loadConfig();
-    if (loading) loading.remove();
+    if (loadingEl) loadingEl.remove();
     renderPoster(cfg);
   } catch (err) {
     console.error('[frostmist-pavilion]', err);
-    if (loading) loading.remove();
+    if (loadingEl) loadingEl.remove();
     if (errorEl) {
       errorEl.textContent = '無法讀取設定檔：' + err.message;
       errorEl.style.display = 'block';
