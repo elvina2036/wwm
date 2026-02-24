@@ -18,13 +18,6 @@ const CORNER_SVG = `
     <path d="M2,14 L6,14 L6,16 L2,16 Z" fill="rgba(200,150,60,0.4)"/>
   </svg>`;
 
-const LEGEND_COLOR_MAP = {
-  gold:  'var(--gold)',
-  jade:  'var(--jade)',
-  red:   'var(--red)',
-  steel: 'var(--steel)',
-  mist:  'var(--mist)',
-};
 
 // ── Config loading ────────────────────────────────────────────────────────────
 function resolveConfigUrl() {
@@ -205,7 +198,7 @@ function renderPoster(cfg) {
   const content = document.createElement('div');
   content.className = 'content';
 
-  const { site, dailyEvent, days, legend } = cfg;
+  const { site, dailyEvent, days } = cfg;
 
   // Header
   content.insertAdjacentHTML('beforeend', `
@@ -248,22 +241,6 @@ function renderPoster(cfg) {
   // Bottom divider
   content.insertAdjacentHTML('beforeend', buildDivider(false));
 
-  // Legend
-  if (legend && legend.length) {
-    const legendEl = document.createElement('div');
-    legendEl.className = 'legend';
-    legend.forEach(item => {
-      const color = LEGEND_COLOR_MAP[item.color] || item.color;
-      legendEl.insertAdjacentHTML('beforeend', `
-        <div class="legend-item">
-          <div class="legend-dot" style="background:${color}"></div>
-          ${escHtml(item.text)}
-        </div>
-      `);
-    });
-    content.appendChild(legendEl);
-  }
-
   // Footer
   content.insertAdjacentHTML('beforeend', `
     <div class="footer">
@@ -302,9 +279,21 @@ function buildDayCol(day) {
     timeEl.textContent = ev.time;
 
     card.appendChild(timeEl);
-    card.insertAdjacentHTML('beforeend',
-      `<div class="event-name">${escHtml(ev.name)}</div>` +
-      (ev.note ? `<div class="event-note">${escHtml(ev.note)}</div>` : ''));
+    card.insertAdjacentHTML('beforeend', `<div class="event-name">${escHtml(ev.name)}</div>`);
+    if (ev.note) {
+      if (ev.noteTime) {
+        const noteEl = document.createElement('div');
+        noteEl.className = 'event-note';
+        noteEl.appendChild(document.createTextNode(ev.note + '\u00A0'));
+        const noteTimeEl = document.createElement('span');
+        noteTimeEl.setAttribute('data-base-time', ev.noteTime);
+        noteTimeEl.textContent = ev.noteTime;
+        noteEl.appendChild(noteTimeEl);
+        card.appendChild(noteEl);
+      } else {
+        card.insertAdjacentHTML('beforeend', `<div class="event-note">${escHtml(ev.note)}</div>`);
+      }
+    }
 
     container.appendChild(card);
   });

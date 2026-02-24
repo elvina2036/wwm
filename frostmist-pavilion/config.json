@@ -71,7 +71,7 @@
       "weekend": true,
       "events": [
         { "type": "battle", "time": "20:30", "name": "破軍殺將",  "note": "" },
-        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 20:00 報名截止" },
+        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 報名截止", "noteTime": "20:00" },
         { "type": "mist",   "time": "21:00", "name": "百業俠境",  "note": "" }
       ]
     },
@@ -80,15 +80,9 @@
       "label": "SUN",
       "weekend": true,
       "events": [
-        { "type": "trophy", "time": "20:30", "name": "百業戰", "note": "★ 20:00 報名截止" }
+        { "type": "trophy", "time": "20:30", "name": "百業戰", "note": "★ 報名截止", "noteTime": "20:00" }
       ]
     }
   ],
-  "legend": [
-    { "color": "gold",  "text": "每日 · 百業派對 20:00" },
-    { "color": "jade",  "text": "一五 · 一決高下 20:30" },
-    { "color": "red",   "text": "三六 · 破軍殺將 20:30" },
-    { "color": "steel", "text": "六日 · 百業戰 20:30" },
-    { "color": "mist",  "text": "百業俠境 · 時間待定" }
-  ]
+  "legend": []
 }
