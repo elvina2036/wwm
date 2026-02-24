@@ -1,4 +1,19 @@
 {
+  "baseTimezone": "Asia/Taipei",
+  "timezones": [
+    { "id": "Asia/Taipei",        "label": "台北　UTC+8" },
+    { "id": "Asia/Tokyo",         "label": "東京　UTC+9" },
+    { "id": "Asia/Hong_Kong",     "label": "香港　UTC+8" },
+    { "id": "Asia/Singapore",     "label": "新加坡　UTC+8" },
+    { "id": "Asia/Seoul",         "label": "首爾　UTC+9" },
+    { "id": "Australia/Sydney",   "label": "雪梨　UTC+11" },
+    { "id": "Europe/London",      "label": "倫敦　GMT" },
+    { "id": "Europe/Paris",       "label": "巴黎　UTC+1" },
+    { "id": "America/New_York",   "label": "紐約　UTC-5" },
+    { "id": "America/Chicago",    "label": "芝加哥　UTC-6" },
+    { "id": "America/Los_Angeles","label": "洛杉磯　UTC-8" },
+    { "id": "UTC",                "label": "UTC±0" }
+  ],
   "site": {
     "label": "江湖　·　活動行事曆",
     "title": "寒　煙　樓",
