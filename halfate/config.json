@@ -1,0 +1,88 @@
+{
+  "baseTimezone": "Asia/Taipei",
+  "timezones": [
+    { "id": "Asia/Taipei",         "label": "台北　UTC+8" },
+    { "id": "Asia/Tokyo",          "label": "東京　UTC+9" },
+    { "id": "Asia/Hong_Kong",      "label": "香港　UTC+8" },
+    { "id": "Asia/Singapore",      "label": "新加坡　UTC+8" },
+    { "id": "Asia/Seoul",          "label": "首爾　UTC+9" },
+    { "id": "Australia/Sydney",    "label": "雪梨　UTC+11" },
+    { "id": "Europe/London",       "label": "倫敦　GMT" },
+    { "id": "Europe/Paris",        "label": "巴黎　UTC+1" },
+    { "id": "America/New_York",    "label": "紐約　UTC-5" },
+    { "id": "America/Chicago",     "label": "芝加哥　UTC-6" },
+    { "id": "America/Los_Angeles", "label": "洛杉磯　UTC-8" },
+    { "id": "UTC",                 "label": "UTC±0" }
+  ],
+  "site": {
+    "label": "百業　·　活動行事曆",
+    "title": "半　命　帖",
+    "subtitle": "半是命數　·　半是江湖情",
+    "seal": "每週固定活動",
+    "footer": "命運相半，江湖再會　©　百業"
+  },
+  "dailyEvent": {
+    "label": "每　日　固　定",
+    "name": "百　業　派　對",
+    "timeLabel": "開　始　時　間",
+    "time": "20:00"
+  },
+  "days": [
+    {
+      "char": "一",
+      "label": "MON",
+      "weekend": false,
+      "events": [
+        { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" },
+        { "type": "mist",       "time": "21:00", "name": "百業俠境", "note": "" }
+      ]
+    },
+    {
+      "char": "二",
+      "label": "TUE",
+      "weekend": false,
+      "events": []
+    },
+    {
+      "char": "三",
+      "label": "WED",
+      "weekend": false,
+      "events": [
+        { "type": "battle", "time": "20:30", "name": "破軍殺將", "note": "" }
+      ]
+    },
+    {
+      "char": "四",
+      "label": "THU",
+      "weekend": false,
+      "events": []
+    },
+    {
+      "char": "五",
+      "label": "FRI",
+      "weekend": false,
+      "events": [
+        { "type": "jade-event", "time": "20:30", "name": "一決高下", "note": "" }
+      ]
+    },
+    {
+      "char": "六",
+      "label": "SAT",
+      "weekend": true,
+      "events": [
+        { "type": "battle", "time": "20:30", "name": "破軍殺將",  "note": "" },
+        { "type": "trophy", "time": "20:30", "name": "百業戰",    "note": "★ 報名截止", "noteTime": "20:00" },
+        { "type": "mist",   "time": "21:00", "name": "百業俠境",  "note": "" }
+      ]
+    },
+    {
+      "char": "日",
+      "label": "SUN",
+      "weekend": true,
+      "events": [
+        { "type": "trophy", "time": "20:30", "name": "百業戰", "note": "★ 報名截止", "noteTime": "20:00" }
+      ]
+    }
+  ],
+  "legend": []
+}
