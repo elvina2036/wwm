@@ -338,12 +338,33 @@ body {
   color: var(--mist);
 }
 
-/* Ink decorations */
-.ink-splash {
+/* 半生緣 decorative SVG elements */
+.ink-wash {
   position: absolute;
-  opacity: 0.04;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
   pointer-events: none;
   z-index: 0;
+}
+
+.ink-splash {
+  position: absolute;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-moon {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 280px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
 }
 
 /* Loading / error state */
